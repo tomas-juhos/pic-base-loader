@@ -149,3 +149,5 @@ cython_debug/
 
 *.parquet
 .parquet
+*.csv
+.csv

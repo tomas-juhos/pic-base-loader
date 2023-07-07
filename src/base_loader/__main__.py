@@ -116,43 +116,13 @@ class Loader:
 
     def cleanup(self):
         """Restricts universe to U.S. and removes every useless records from the data"""
-        # CHANGE VOLUME CONSTRAINTS BELOW IF NEEDED
-        query1 = (
-            "DELETE "
-            "FROM daily_base "
-            "WHERE market_cap < 100 "
-            "OR volume < 1000000 "
-            "OR market_cap IS NULL "
-            "OR volume IS NULL "
-            "OR rtn IS NULL;"
-        )
-        query2 = (
-            "DELETE "
-            "FROM daily_base "
-            "WHERE utilization_pct IS NULL "
-            "AND bar IS NULL "
-            "AND age IS NULL "
-            "AND tickets IS NULL "
-            "AND units IS NULL "
-            "AND market_value_usd IS NULL "
-            "AND loan_rate_avg IS NULL "
-            "AND loan_rate_max IS NULL "
-            "AND loan_rate_min IS NULL "
-            "AND loan_rate_range IS NULL "
-            "AND loan_rate_stdev IS NULL;"
-        )
-        query3 = (
-            "DELETE "
-            "FROM daily_base "
-            "WHERE (gvkey) IN (VALUES %s);"
-        )
         logger.info("Cleaning daily_base table...")
         logger.info("Removing invalid records (no market_cap/no volume/returns data/below thresholds)...")
-        self.target.execute_query(query1)
+        self.target.execute_query(queries.CleanupQueries.CLEAN_MKTCAP_VOL_RTN)
         self.target.commit_transaction()
 
         logger.info("Removing invalid records (no astec data)...")
-        self.target.execute_query(query2)
+        self.target.execute_query(queries.CleanupQueries.CLEAN_ASTEC)
         self.target.commit_transaction()
 
         logger.info("Restricting to U.S. gvkeys only...")
@@ -165,7 +135,7 @@ class Loader:
         i = 0
         for keys_slice in invalid_keys:
             logger.debug(f"Deleted {i * 100}/{n} invalid keys.")
-            self.target.execute(query3, keys_slice)
+            self.target.execute(queries.CleanupQueries.CLEAN_GVKEYS, keys_slice)
             self.target.commit_transaction()
             i += 1
 

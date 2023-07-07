@@ -11,7 +11,7 @@ from base_loader.persistence import source, target
 import base_loader.queries as queries
 
 logging.basicConfig(
-    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+    level="INFO",
     format="%(asctime)s %(levelname)s [%(filename)s:%(lineno)d]: %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     stream=stdout,

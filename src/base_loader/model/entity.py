@@ -10,6 +10,7 @@ class Entity(str, Enum):
     MARKET_CAP = "market_cap"
     RETURNS = "returns"
     SHARES_OUT = "shares_out"
+    VOLUME = "volume"
 
     def __repr__(self) -> str:
         return str(self.value)

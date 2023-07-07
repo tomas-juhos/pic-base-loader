@@ -20,6 +20,14 @@ class Modeling(ABC):
         """
 
     @abstractmethod
+    def move_date_forward(self) -> None:
+        """Moves object's date component forward."""
+
+    @abstractmethod
+    def move_date_backwards(self) -> None:
+        """Moves object's date component backwards."""
+
+    @abstractmethod
     def as_tuple(self) -> Tuple:
         """Returns object values as a tuple.
 

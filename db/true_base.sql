@@ -1,4 +1,4 @@
-CREATE TABLE daily_base
+CREATE TABLE true_base
 (
     datadate                            TIMESTAMP,
     gvkey                               INTEGER,
@@ -19,7 +19,6 @@ CREATE TABLE daily_base
     shares_out                          BIGINT,
     volume                              DECIMAL(30,15),
     rtn                                 DECIMAL(25,15),
-    winsorized_5_rtn                    DECIMAL(25,15),
 
     PRIMARY KEY (gvkey, datadate)
 );

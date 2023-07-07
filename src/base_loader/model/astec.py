@@ -7,6 +7,7 @@ import numpy as np
 from typing import Optional, Tuple
 
 from base_loader.model.base import Modeling
+from base_loader.date_helpers import one_day_forward, one_day_backwards
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +32,7 @@ class Astec(Modeling):
 
     market_cap: Optional[Decimal] = None
     shares_out: Optional[Decimal] = None
+    volume: Optional[Decimal] = None
     rtn: Optional[Decimal] = None
 
     @classmethod
@@ -86,6 +88,12 @@ class Astec(Modeling):
 
         return res
 
+    def move_date_forward(self):
+        self.datadate = one_day_forward(self.datadate)
+
+    def move_date_backwards(self):
+        self.datadate = one_day_backwards(self.datadate)
+
     def as_tuple(self) -> Tuple:
         """Get tuple with object attributes.
 
@@ -108,6 +116,7 @@ class Astec(Modeling):
             self.loan_rate_stdev,
             self.market_cap,
             self.shares_out,
+            self.volume,
             self.rtn,
         )
 
@@ -127,6 +136,7 @@ class Astec(Modeling):
             and self.loan_rate_stdev is None
             and self.market_cap is None
             and self.shares_out is None
+            and self.volume is None
             and self.rtn is None
         ):
             return True

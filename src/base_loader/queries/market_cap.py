@@ -6,7 +6,7 @@ class Queries(BaseQueries):
     """Market cap queries class."""
 
     UPSERT = (
-        "INSERT INTO daily_base ("
+        "INSERT INTO {tbl} ("
         "           datadate, "
         "           gvkey, "
         "           utilization_pct, "
@@ -22,6 +22,7 @@ class Queries(BaseQueries):
         "           loan_rate_stdev, "
         "           market_cap, "
         "           shares_out, "
+        "           volume, "
         "           rtn"
         ") VALUES %s "
         "ON CONFLICT (datadate, gvkey) DO "

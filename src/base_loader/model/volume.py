@@ -1,4 +1,4 @@
-"""Shares outstanding model."""
+"""Volume model."""
 
 from datetime import datetime
 from decimal import Decimal
@@ -8,11 +8,13 @@ from typing import Optional, Tuple
 from base_loader.model.base import Modeling
 from base_loader.date_helpers import one_day_forward, one_day_backwards
 
+import numpy as np
+
 logger = logging.getLogger(__name__)
 
 
-class SharesOut(Modeling):
-    """Shares outstanding record object class."""
+class Volume(Modeling):
+    """Volume record object class."""
 
     datadate: datetime
     gvkey: int
@@ -35,24 +37,25 @@ class SharesOut(Modeling):
     rtn: Optional[Decimal] = None
 
     @classmethod
-    def build_record(cls, record: Tuple) -> "SharesOut":
-        """Builds Returns record object.
+    def build_record(cls, record) -> "Volume":
+        """Volume record object.
 
         Args:
-            record: record from returns_v2 file.
+            record: record.
 
         Returns:
-            MarketCap record object.
+            Volume record object.
         """
         res = cls()
 
-        res.datadate = datetime.strptime(record[1], "%Y-%m-%d")
+        dt64 = record[1]
+        unix_epoch = np.datetime64(0, "s")
+        one_second = np.timedelta64(1, "s")
+        seconds_since_epoch = (dt64 - unix_epoch) / one_second
+
+        res.datadate = datetime.utcfromtimestamp(seconds_since_epoch)
         res.gvkey = int(record[0])
-        res.shares_out = (
-            int(Decimal(record[2]))
-            if record[2] and not Decimal(record[2]).is_nan()
-            else None
-        )
+        res.volume = Decimal(record[2]) if record[2] and not Decimal(record[2]).is_nan() else None
 
         return res
 
@@ -117,3 +120,4 @@ class SharesOut(Modeling):
             return True
         else:
             return False
+

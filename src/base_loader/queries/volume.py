@@ -1,9 +1,9 @@
-"""Returns queries."""
+"""Volume queries."""
 from .base import BaseQueries
 
 
 class Queries(BaseQueries):
-    """Returns queries class."""
+    """Volume queries class."""
 
     UPSERT = (
         "INSERT INTO {tbl} ("
@@ -29,5 +29,5 @@ class Queries(BaseQueries):
         "UPDATE SET "
         "           datadate=EXCLUDED.datadate, "
         "           gvkey=EXCLUDED.gvkey, "
-        "           rtn=EXCLUDED.rtn; "
+        "           volume=EXCLUDED.volume; "
     )

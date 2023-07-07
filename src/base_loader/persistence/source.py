@@ -2,8 +2,9 @@
 import logging
 import os
 from pathlib import Path
-import pyarrow.parquet as pq
 from typing import List, Tuple
+
+import pyarrow.parquet as pq
 
 logger = logging.getLogger(__name__)
 
